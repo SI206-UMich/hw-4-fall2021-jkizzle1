@@ -27,7 +27,11 @@ class Customer:
     
     # Submit_order takes a cashier, a stall and an amount as parameters, 
     # it deducts the amount from the customer’s wallet and calls the receive_payment method on the cashier object
-    def submit_order(self, cashier, stall, amount): 
+    def submit_order(self, cashier, stall, amount):  
+        self.wallet = self.wallet - amount
+        cashier.receive_payment(stall, amount)
+
+
         pass
 
     # The __str__ method prints the customer's information.    
@@ -72,6 +76,44 @@ class Cashier:
 ## Complete the Stall class here following the instructions in HW_4_instructions_rubric
 class Stall:
     
+    def __init__(self, name, inventory, cost = 7, earnings = 0):
+        self.name = name
+        self.inventory = inventory
+        self.cost = cost
+        self.earnings = earnings
+
+    def process_order(self, food_name, quantity):
+        if self.has_item(food_name, quantity):
+            self.inventory[food_name] = self.inventory[food_name] - quantity
+            self.earnings = self.earnings + (quantity * self.cost)
+        else:
+            pass
+
+    def has_item(self, food_name, quantity):
+        if not(food_name in self.inventory):
+            return False
+        elif self.inventory[food_name] >= quantity:
+            return True
+        else:
+            return False
+
+    def stock_up(self, food_name, quantity):        
+        if food_name in self.inventory:
+           self.inventory[food_name] = self.inventory[food_name] + quantity
+        else: 
+            self.inventory[food_name] = quantity
+
+    def compute_cost(self, quantity):
+        return (quantity * self.cost)
+
+    def __str__(self):
+        keys = ""
+        for item in self.inventory:
+            keys = keys + item + ", "
+        keys = keys[0:-2]
+        keys = keys.lower()
+        return "Hello, we are " + self.name + ". This is the current menu " + keys + ". We charge $" + str(self.cost) + " per item. We have $" + str(self.earnings) + " in total."
+
     pass
 
 
