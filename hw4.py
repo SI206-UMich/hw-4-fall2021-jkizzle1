@@ -75,7 +75,7 @@ class Cashier:
 
 ## Complete the Stall class here following the instructions in HW_4_instructions_rubric
 class Stall:
-    
+
     def __init__(self, name, inventory, cost = 7, earnings = 0):
         self.name = name
         self.inventory = inventory
@@ -208,10 +208,22 @@ class TestAllMethods(unittest.TestCase):
 	# Test validate order
     def test_validate_order(self):
 		# case 1: test if a customer doesn't have enough money in their wallet to order
+        print("test_validate_order case 1:")
+        self.f1.validate_order(self.c1, self.s1, "Burger", 20)
+        print("Should print: Don't have enough money for that :( Please reload more money!")
 
-		# case 2: test if the stall doesn't have enough food left in stock
+        # case 2: test if the stall doesn't have enough food left in stock
+        print("test_validate_order case 2:")
+        self.s2.stock_up("Pizza", 2)
+        self.f1.validate_order(self.c2, self.s2, "Pizza", 4)
+        print("Should print: Our stall has run out of Pizza :( Please try a different stall!")
+        
+        # case 3: check if the cashier can order item from that stall
+        print("test_validate_order case 3:")
+        self.s4 = Stall("Extra", {"Pizza":3, "Pasta":45})
+        self.f2.validate_order(self.c2, self.s4, "Taco", 3)
+        print("Should print: Sorry, we don't have that vendor stall. Please try a different one.")
 
-		# case 3: check if the cashier can order item from that stall
         pass
 
     # Test if a customer can add money to their wallet
