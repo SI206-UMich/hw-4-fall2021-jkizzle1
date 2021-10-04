@@ -189,8 +189,8 @@ class TestAllMethods(unittest.TestCase):
     def test_compute_cost(self):
         #what's wrong with the following statements?
         #can you correct them?
-        self.assertEqual(self.s1.compute_cost(self.s1,5), 51)
-        self.assertEqual(self.s3.compute_cost(self.s3,6), 45)
+        self.assertEqual(self.s1.compute_cost(5), 50)
+        self.assertEqual(self.s3.compute_cost(6), 42)
 
 	# Check that the stall can properly see when it is empty
     def test_has_item(self):
@@ -199,10 +199,11 @@ class TestAllMethods(unittest.TestCase):
         # Test to see if has_item returns True when a stall has enough items left
         # Please follow the instructions below to create three different kinds of test cases 
         # Test case 1: the stall does not have this food item: 
-        
+        self.assertEqual(self.s1.has_item("Quesadilla", 2), False)
         # Test case 2: the stall does not have enough food item: 
-        
+        self.assertEqual(self.s1.has_item("Burger", 45), False)
         # Test case 3: the stall has the food item of the certain quantity: 
+        self.assertEqual(self.s1.has_item("Burger", 20), True)
         pass
 
 	# Test validate order
@@ -240,16 +241,37 @@ class TestAllMethods(unittest.TestCase):
 ### Write main function
 def main():
     #Create different objects 
-
+    invent_1 = {'Walking Taco': 15, 'Burrito': 10, 'Quesadilla': 5}
+    invent_2 = {'Smoothie': 8, 'Banana Bread': 20, 'Parfait': 14}
+    cust_1 = Customer("Joyce", 105)
+    cust_2 = Customer("Andrew", 74)
+    cust_3 = Customer("Junie", 60)
+    stall_1 = Stall("Sabrosa", invent_1, cost=6)
+    stall_2 = Stall("Morningside", invent_2, cost=10)
+    cashier_1 = Cashier("Kayla", [stall_1])
+    cashier_2 = Cashier("Amy", [stall_1, stall_2])
     #Try all cases in the validate_order function
     #Below you need to have *each customer instance* try the four cases
     #case 1: the cashier does not have the stall 
-    
+    print("cases where the cashier does not have the stall:")
+    cust_1.validate_order(cashier_1, stall_2, "Parfait", 12)
+    cust_2.validate_order(cashier_1, stall_2, "Parfait", 12)
+    cust_3.validate_order(cashier_1, stall_2, "Banana Bread", 3)
     #case 2: the casher has the stall, but not enough ordered food or the ordered food item
-    
+    cust_1.validate_order(cashier_1, stall_1, "Parfait", 2)
+    cust_2.validate_order(cashier_2, stall_2, "Banana Bread", 30)
+    cust_3.validate_order(cashier_2, stall_1, "Quesadilla", 6)
+
     #case 3: the customer does not have enough money to pay for the order: 
-    
+    cust_1.validate_order(cashier_2, stall_2, "Banana Bread", 11)
+    cust_2.validate_order(cashier_2, stall_2, "Parfait", 9)
+    cust_3.validate_order(cashier_1, stall_1, "Walking Taco", 11)
+
     #case 4: the customer successfully places an order
+    print("cases where the orders go though. Nothing should be printed after this.")
+    cust_1.validate_order(cashier_1, stall_1, "Walking Taco", 2)
+    cust_2.validate_order(cashier_2, stall_1, "Quesadilla", 2)
+    cust_3.validate_order(cashier_2, stall_2, "Banana Bread", 3)
 
     pass
 
