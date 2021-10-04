@@ -217,7 +217,7 @@ class TestAllMethods(unittest.TestCase):
         self.s2.stock_up("Pizza", 2)
         self.f1.validate_order(self.c2, self.s2, "Pizza", 4)
         print("Should print: Our stall has run out of Pizza :( Please try a different stall!")
-        
+
         # case 3: check if the cashier can order item from that stall
         print("test_validate_order case 3:")
         self.s4 = Stall("Extra", {"Pizza":3, "Pasta":45})
@@ -228,6 +228,13 @@ class TestAllMethods(unittest.TestCase):
 
     # Test if a customer can add money to their wallet
     def test_reload_money(self):
+        print("test_reload_money: starting with not enough-")
+        self.f1.validate_order(self.c1, self.s1, "Burger", 20)
+        print("Adding money now. Customer should have enough to buy 20 Burgers, so 20 will remain in the Stall's inventory.")
+        self.f1.reload_money(102)
+        self.f1.validate_order(self.c1, self.s1, "Burger", 20)
+        print(self.s1.__str__()) 
+
         pass
     
 ### Write main function
